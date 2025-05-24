@@ -1906,6 +1906,9 @@ class Q3DScene extends THREE.Scene {
 		this.labelConnectorGroup = new Q3DGroup();
 		this.labelConnectorGroup.name = "label connector";
 		this.add(this.labelConnectorGroup);
+
+		this.blockCount = 0;
+    	this.MAX_BLOCKS = 200;
 	}
 
 	add(object) {
@@ -2006,6 +2009,8 @@ class Q3DScene extends THREE.Scene {
 			this.requestRender();
 		}
 		else if (jsonObject.type == "block") {
+			if (this.blockCount >= this.MAX_BLOCKS) return;
+      		this.blockCount++;
 			var layer = this.mapLayers[jsonObject.layer];
 			if (layer === undefined) {
 				// console.error("layer not exists:" + jsonObject.layer);
