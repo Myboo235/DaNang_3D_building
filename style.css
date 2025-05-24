@@ -1,5 +1,7 @@
 .heading {
     height: 5rem;
+    /* position: absolute; */
+    /* top: 0; */
     /* background: #000; */
 }
 .tooltip {

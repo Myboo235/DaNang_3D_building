@@ -1669,6 +1669,38 @@ Q3D.E = function (id) {
 		var e = E("qr_layername");
 		if (layer && e) e.innerHTML = layer.properties.name;
 
+		// add thumbnail
+		if (layer && e && obj?.userData) {
+			const thumbnailElement = document.getElementById("popupthumbnail");
+			if (!thumbnailElement) {
+				console.warn("#popupthumbnail not found in DOM");
+				return;
+			}
+
+			const placeNameElement = document.getElementById("popupplacename");
+
+
+
+			console.log(thumbnailElement);
+			try {
+				let index = 79;
+				var imgUrl = obj.userData.properties[index];
+				console.log(layer.properties.propertyNames[index]);
+				console.log(imgUrl);
+				if (imgUrl && imgUrl !== "NULL") {
+					thumbnailElement.innerHTML = `<img src="${imgUrl}" alt="Thumbnail" style="max-width: 100%; object-fit: contain;">`;
+				} else {
+					thumbnailElement.innerHTML = "image here";  // Or a placeholder
+				}
+
+				placeNameElement.innerHTML = `${obj.userData.properties[2]}`
+				
+			} catch (error) {
+				
+			}
+			
+		}
+
 		// clicked coordinates
 		e = E("qr_coords_table");
 		if (e) {
@@ -1684,7 +1716,7 @@ Q3D.E = function (id) {
 					e.innerHTML = Q3D.Utils.convertToDMS(lonLat[1], lonLat[0]) + ", Elev. " + pt.z.toFixed(2);
 				}
 				else {
-					e.innerHTML = [pt.x.toFixed(2), pt.y.toFixed(2), pt.z.toFixed(2)].join(", ");
+					e.innerHTML = [pt.x.toFixed(10), pt.y.toFixed(10), pt.z.toFixed(2)].join(", ");
 				}
 			}
 			else {
@@ -1908,7 +1940,7 @@ class Q3DScene extends THREE.Scene {
 		this.add(this.labelConnectorGroup);
 
 		this.blockCount = 0;
-    	this.MAX_BLOCKS = 200;
+    	this.MAX_BLOCKS = 100;
 	}
 
 	add(object) {

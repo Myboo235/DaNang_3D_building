@@ -96,6 +96,7 @@ body {
 
 #toolbtns {
   position: absolute;
+  top: 5.2rem;
   margin: 1px;
   box-shadow: 1px 2px 6px rgba(0,0,0,0.2);
   float: left;
@@ -165,6 +166,9 @@ body {
 /* popup */
 #popup {
   position: absolute;
+  top: 5.2rem;
+  padding: 0 2rem;
+  border-radius: 0.5rem;
   margin: 1px 2px;
   max-width: 480px;
   min-width: 300px;
@@ -173,6 +177,23 @@ body {
   box-shadow: 1px 2px 6px rgba(0,0,0,0.2);
   display: none;
 }
+
+#popupthumbnail > img {
+  width: 100%;
+  max-height: 20rem;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+
+#popupplacename {
+  width: 100%;
+  font-size: 1.6rem;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+
 
 #popupbar {
   padding-left: 4px;
@@ -212,15 +233,18 @@ body {
 #popupbody table {
   margin: 4px 0px;
   width: 100%;
+  word-wrap: break-all;
 }
 
 #popupbody table caption {
-  background-color: gray;
+  background-color: #1976d2;
   color: white;
-  font-size: small;
+  font-size: 1.2rem;
   padding: 1px 1px 1px 6px;
   text-align: left;
   vertical-align: bottom;
+  border-radius: 0.4rem 0.4rem 0 0;
+  max-width: 100%;
 }
 
 #popupbody table td {
@@ -236,7 +260,8 @@ body {
 }
 
 #qr_attrs_table tr td:first-child {
-  width: 40%;
+  max-width: 40%;
+  word-wrap: break-word;
 }
 
 .action-zoom {
