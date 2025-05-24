@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="signup-modal" class="login-modal" style="display:none">
+    <form class="login-form">
+      <h2>Sign Up</h2>
+      <label for="signup-username">Username</label>
+      <input type="text" id="signup-username" name="signup-username" required>
+      <label for="signup-password">Password</label>
+      <input type="password" id="signup-password" name="signup-password" required>
+      <label for="signup-confirm">Confirm Password</label>
+      <input type="password" id="signup-confirm" name="signup-confirm" required>
+      <button type="submit">Sign Up</button>
+      <div style="text-align:center;margin-top:10px;">
+        <a href="#" id="to-login">Already have an account? Log in</a>
+      </div>
+    </form>
+  </div>
+  <div id="login-modal" class="login-modal">
+    <form class="login-form" id="login-form">
+      <h2>Log In</h2>
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required>
+      <button type="submit">Log In</button>
+      <div style="text-align:center;margin-top:10px;">
+        <a href="#" id="to-signup">Don't have an account? Sign up</a>
+      </div>
+    </form>
+  </div>
+  <script>
+  // Switch between login and signup forms
+  document.getElementById('to-signup').onclick = function(e) {
+    e.preventDefault();
+    document.getElementById('login-modal').style.display = 'none';
+    document.getElementById('signup-modal').style.display = 'flex';
+  };
+  document.getElementById('to-login').onclick = function(e) {
+    e.preventDefault();
+    document.getElementById('signup-modal').style.display = 'none';
+    document.getElementById('login-modal').style.display = 'flex';
+  };
+
+  document.getElementById('login-form').onsubmit = function(e) {
+    e.preventDefault();
+    var passwordField = document.getElementById('password');
+    var usernameField = document.getElementById('username');
+    if (passwordField.value == 'admin' && usernameField.value == 'admin') {
+      window.location.href = 'index.html';
+    } else {
+      alert('Invalid username or password');
+    }
+  };
+</script>
+</body>
+
+
+</html>
