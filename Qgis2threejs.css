@@ -166,8 +166,8 @@ body {
 /* popup */
 #popup {
   position: absolute;
-  top: 5.2rem;
-  padding: 0 2rem;
+  top: 5.6rem;
+  padding: 0 1rem;
   border-radius: 0.5rem;
   margin: 1px 2px;
   max-width: 480px;
@@ -176,7 +176,20 @@ body {
   background-color: white;
   box-shadow: 1px 2px 6px rgba(0,0,0,0.2);
   display: none;
+  height: 40rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-color: #1976d2 white;
+  word-break: break-all;
+  border: 1px solid #000;
 }
+
+#popupthumbnail {
+  width: 100%;
+  min-height: 20rem;
+  border: 2px #000;
+}
+
 
 #popupthumbnail > img {
   width: 100%;
@@ -187,6 +200,8 @@ body {
 
 #popupplacename {
   width: 100%;
+  padding: 0 2rem;
+  margin: 2rem 0;
   font-size: 1.6rem;
   word-wrap: break-word;
   word-break: break-word;
@@ -197,19 +212,23 @@ body {
 
 #popupbar {
   padding-left: 4px;
-  height: 19px;
+  /* height: 19px; */
   border-bottom: 1px solid lightgray;
   border-radius: 3px 3px 0 0;
 }
 
 #closebtn {
+  position: absolute ;
+  right: 0;
   color: #ccc;
-  padding: 2px;
-  line-height: 16px;
-  font-size: 16px;
+  background-color: #000;
+  padding: 2px 8px;
+  /* line-height: 16px; */
+  font-size: 30px;
   font-weight: bold;
-  width: 16px;
-  height: 16px;
+  size: 4rem;
+  /* width: 16px; */
+  /* height: 16px; */
   text-align: center;
   float: right;
   cursor: pointer;
@@ -217,17 +236,31 @@ body {
 
 #closebtn:hover {
   background-color: #eee;
+  color: #000;
 }
 
 #popupbody {
   padding: 0px 5px 5px;
-  min-width: 290px;
+  min-width: 484px;
   max-height: 500px;
   overflow: auto;
+  /* scrollbar-color: transparent transparent; */
+  scrollbar-width: 0 !important;
 }
 
-#popupcontent, #queryresult {
+#popupcontent{
   display: none;
+  padding: 0 2rem;
+}
+
+#queryresult {
+  display: none;
+  margin-top: 4rem;
+}
+
+#popupbody::-webkit-scrollbar { 
+  display: none !important;
+  
 }
 
 #popupbody table {

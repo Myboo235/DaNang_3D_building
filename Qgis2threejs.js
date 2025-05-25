@@ -4,6 +4,42 @@
 
 "use strict";
 
+var thumbnailUrl = "";
+var placeName = "";
+
+async function getFirstImage(url) {
+				try {
+					const proxy = 'https://cors-anywhere.herokuapp.com/';
+					const response = await fetch(proxy + url, {
+							headers: {
+								'X-Requested-With': 'XMLHttpRequest',
+							},
+						})
+					const html = await response.text();
+					const parser = new DOMParser();
+					const doc = parser.parseFromString(html, 'text/html');
+
+					console.log(doc);
+					
+					
+					const firstImage = doc.querySelector('img');
+					
+					return firstImage ? firstImage.src : null;
+				} catch (error) {
+					console.error('Error fetching or parsing the page:', error);
+					return null;
+				}
+			}
+
+			getFirstImage('https://www.bing.com/images/search?q=vv+mall').then(imageUrl => {
+				if (imageUrl) {
+					console.log('First image URL:', imageUrl);
+				} else {
+					console.log('No image found or error occurred.');
+				}
+			});
+
+
 var Q3D = {
 
 	VERSION: "2.8",
@@ -1670,29 +1706,32 @@ Q3D.E = function (id) {
 		if (layer && e) e.innerHTML = layer.properties.name;
 
 		// add thumbnail
+		const thumbnailElement = document.getElementById("popupthumbnail");
+		const placeNameElement = document.getElementById("popupplacename");
 		if (layer && e && obj?.userData) {
-			const thumbnailElement = document.getElementById("popupthumbnail");
-			if (!thumbnailElement) {
-				console.warn("#popupthumbnail not found in DOM");
-				return;
+			const thumbnailIndex = 79;
+			if (!thumbnailElement || !placeNameElement) {
+				console.warn("Cant show image");
 			}
-
-			const placeNameElement = document.getElementById("popupplacename");
-
-
-
-			console.log(thumbnailElement);
+	
 			try {
-				let index = 79;
-				var imgUrl = obj.userData.properties[index];
-				console.log(layer.properties.propertyNames[index]);
-				console.log(imgUrl);
-				if (imgUrl && imgUrl !== "NULL") {
-					thumbnailElement.innerHTML = `<img src="${imgUrl}" alt="Thumbnail" style="max-width: 100%; object-fit: contain;">`;
+				
+				thumbnailUrl = obj.userData.properties[thumbnailIndex];
+				if (thumbnailUrl && thumbnailUrl !== "NULL") {
+					// thumbnailElement.innerHTML = `<img src="${thumbnailUrl}" alt="Thumbnail" style="max-width: 100%; object-fit: contain;">`;
+				thumbnailElement.style.display = ""
+					
+					thumbnailElement.style.backgroundImage = `url("${thumbnailUrl}")`;
+					// thumbnailElement.style.backgroundSize = "contain";
+					thumbnailElement.style.backgroundRepeat = "no-repeat";
+					thumbnailElement.style.backgroundPosition = "center";
+					thumbnailElement.innerHTML = "";
 				} else {
 					thumbnailElement.innerHTML = "image here";  // Or a placeholder
 				}
 
+				thumbnailUrl = ""
+				// thumbnailElement.style.backgroundImage = ""
 				placeNameElement.innerHTML = `${obj.userData.properties[2]}`
 				
 			} catch (error) {
@@ -1742,6 +1781,8 @@ Q3D.E = function (id) {
 			}
 			else {
 				e.classList.add("hidden");
+				thumbnailElement.style.backgroundImage = "";
+				thumbnailElement.style.display = "none"
 			}
 		}
 		gui.popup.show("queryresult");
@@ -1940,7 +1981,7 @@ class Q3DScene extends THREE.Scene {
 		this.add(this.labelConnectorGroup);
 
 		this.blockCount = 0;
-    	this.MAX_BLOCKS = 100;
+    this.MAX_BLOCKS = 1000000;
 	}
 
 	add(object) {
@@ -2041,13 +2082,44 @@ class Q3DScene extends THREE.Scene {
 			this.requestRender();
 		}
 		else if (jsonObject.type == "block") {
-			if (this.blockCount >= this.MAX_BLOCKS) return;
-      		this.blockCount++;
+			// if (this.blockCount >= this.MAX_BLOCKS) return;
+      		// this.blockCount++;
+			// jsonObject.features = jsonObject.features.filter(feature => feature.prop[2] !== "NULL");
+			jsonObject.features = jsonObject.features
+				// FILTER BUIDLING ALREADY HAS NAME
+				.filter(feature => feature.prop[2] !== "NULL")
+				.map(feature => {
+					const name = feature.prop[2];
+					const encodedName = encodeURIComponent(name);
+					const imageSearchUrl = `https://www.google.com/search?tbm=isch&q=${encodedName}`;
+    
+					if (feature.prop[79] !== "NULL") return feature
+					feature.prop[79] = imageSearchUrl;
+					return feature;
+				});
+
+
 			var layer = this.mapLayers[jsonObject.layer];
-			if (layer === undefined) {
+			// console.log("=================================");			
+			// console.log(layer);
+			// console.log(jsonObject);
+			// const features = jsonObject.features;
+			// features.map((feature) => {
+			// 	const name = feature.prop[2]
+			// 	if(name !== "NULL") {
+			// 		console.log(name);
+			// 	}
+				
+			// })
+			// console.log("=================================");
+
+			if (layer === undefined) {	
 				// console.error("layer not exists:" + jsonObject.layer);
 				return;
 			}
+
+			// features = layer?.features;
+
 			layer.loadJSONObject(jsonObject, this);
 
 			this.requestRender();
