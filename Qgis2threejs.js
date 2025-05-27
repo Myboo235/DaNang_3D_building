@@ -20,10 +20,10 @@ async function getFirstImage(url) {
 					const doc = parser.parseFromString(html, 'text/html');
 
 					console.log(doc);
-					
-					
+
+
 					const firstImage = doc.querySelector('img');
-					
+
 					return firstImage ? firstImage.src : null;
 				} catch (error) {
 					console.error('Error fetching or parsing the page:', error);
@@ -1713,14 +1713,14 @@ Q3D.E = function (id) {
 			if (!thumbnailElement || !placeNameElement) {
 				console.warn("Cant show image");
 			}
-	
+
 			try {
-				
+
 				thumbnailUrl = obj.userData.properties[thumbnailIndex];
 				if (thumbnailUrl && thumbnailUrl !== "NULL") {
 					// thumbnailElement.innerHTML = `<img src="${thumbnailUrl}" alt="Thumbnail" style="max-width: 100%; object-fit: contain;">`;
 				thumbnailElement.style.display = ""
-					
+
 					thumbnailElement.style.backgroundImage = `url("${thumbnailUrl}")`;
 					// thumbnailElement.style.backgroundSize = "contain";
 					thumbnailElement.style.backgroundRepeat = "no-repeat";
@@ -1733,11 +1733,11 @@ Q3D.E = function (id) {
 				thumbnailUrl = ""
 				// thumbnailElement.style.backgroundImage = ""
 				placeNameElement.innerHTML = `${obj.userData.properties[2]}`
-				
+
 			} catch (error) {
-				
+
 			}
-			
+
 		}
 
 		// clicked coordinates
@@ -2086,21 +2086,25 @@ class Q3DScene extends THREE.Scene {
       		// this.blockCount++;
 			// jsonObject.features = jsonObject.features.filter(feature => feature.prop[2] !== "NULL");
 			jsonObject.features = jsonObject.features
-				// FILTER BUIDLING ALREADY HAS NAME
+				// FILTER BUILDING ALREADY HAS NAME
 				.filter(feature => feature.prop[2] !== "NULL")
 				.map(feature => {
 					const name = feature.prop[2];
+					console.log(name);
 					const encodedName = encodeURIComponent(name);
-					const imageSearchUrl = `https://www.google.com/search?tbm=isch&q=${encodedName}`;
-    
-					if (feature.prop[79] !== "NULL") return feature
+					const imageSearchUrl = `https://www.bing.com/images/search?q=${encodedName}&first=1`;
+
+					// If feature already has an image link, keep it
+					if (feature.prop[79] !== "NULL") return feature;
+
+					// Otherwise, set Bing image search URL as the image link
 					feature.prop[79] = imageSearchUrl;
 					return feature;
 				});
 
 
 			var layer = this.mapLayers[jsonObject.layer];
-			// console.log("=================================");			
+			// console.log("=================================");
 			// console.log(layer);
 			// console.log(jsonObject);
 			// const features = jsonObject.features;
@@ -2109,11 +2113,11 @@ class Q3DScene extends THREE.Scene {
 			// 	if(name !== "NULL") {
 			// 		console.log(name);
 			// 	}
-				
+
 			// })
 			// console.log("=================================");
 
-			if (layer === undefined) {	
+			if (layer === undefined) {
 				// console.error("layer not exists:" + jsonObject.layer);
 				return;
 			}
